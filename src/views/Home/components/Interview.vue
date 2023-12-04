@@ -26,7 +26,6 @@ export default {
     requstWs() {
       // 防止用户多次连续点击发起请求，所以要先关闭上次的ws请求。
       closeWebsocket();
-      // 跟后端协商，需要什么参数数据给后台
       const obj = {
         arrange_id: 179,
         student_id: 1,
