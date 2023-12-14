@@ -7,6 +7,7 @@ import router from "@/router/index"
 const http = axios.create({
     // 环境变量，需要在.env文件中配置
     baseURL: "http://39.101.77.206:8181",
+    // baseURL: "yangchengxi.e3.luyouxia.net:11992",
     // 超时时间暂定5s
     timeout: 5000,
 });

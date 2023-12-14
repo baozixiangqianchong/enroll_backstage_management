@@ -314,7 +314,6 @@ const areasigndata = ref({
 //获取列表信息
 const formData = async () => {
   const res = await BySpeciaIty();
-  console.log("饼图数据", res.data);
   tableData.value = res.data.filter((item) => item.type != "总");
   allData.value = res.data[0];
   // 使用map方法提取type和sum属性的值

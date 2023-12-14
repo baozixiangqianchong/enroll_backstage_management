@@ -24,7 +24,11 @@
             </span>
             <span>
               <i class="iconfont icon-tuichu"></i>
-              <text @click="exit">退出登录</text>
+              <el-popconfirm title="是否确认退出?" @confirm="exit">
+                <template #reference>
+                  <text>退出登录</text>
+                </template>
+              </el-popconfirm>
             </span>
           </div>
         </div>
@@ -207,6 +211,10 @@ const items = ref([
 //点击退出登录
 const exit = () => {
   router.push("/");
+  ElMessage({
+    message: "退出成功！",
+    type: "success",
+  });
 };
 
 onMounted(() => {

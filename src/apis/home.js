@@ -110,16 +110,16 @@ export const deleteDraft = (data) => {
 //自动生成面试表
 export const addArrange = (data) => {
     return http({
-        url: "/march/admin/addArrangeGroup",
+        url: "/march/admin/arrange/addArrangeGroup",
         method: "POST",
         data
     })
 }
 
-//获取面试记录
+//获取面试安排
 export const getArrange = () => {
     return http({
-        url: "/march/admin/getArrangeGroup",
+        url: "/march/admin/arrange/getArrangeGroup",
         method: "GET",
     })
 }
@@ -127,7 +127,7 @@ export const getArrange = () => {
 //修改个人宣讲时间
 export const VisitTime = (data) => {
     return http({
-        url: "/march/admin/updateVisitTime",
+        url: "/march/admin/arrange/updateVisitTime",
         method: "PUT",
         data
     })
@@ -136,7 +136,7 @@ export const VisitTime = (data) => {
 //修改个人面试时间
 export const InterviewTime = (data) => {
     return http({
-        url: "/march/admin/updateInterviewTime",
+        url: "/march/admin/arrange/updateInterviewTime",
         method: "PUT",
         data
     })
@@ -164,5 +164,47 @@ export const InterviewState = () => {
     return http({
         url: "/march/admin/updateInterviewState",
         method: "PUT"
+    })
+}
+
+// 获取面试记录
+export const InterviewRecord = (arrange_id) => {
+    return http({
+        url: "/march/admin/interviewRecord/query",
+        method: "GET",
+        params: {
+            arrange_id
+        }
+    })
+}
+// 获取树状选择
+export const Menus = (type) => {
+    return http({
+        url: "/march/admin/arrange/menus",
+        method: "GET",
+        params: { type }
+    })
+}
+
+// 取消学生的安排
+export const cancelTime = (ids, type) => {
+    return http({
+        url: "/march/admin/arrange/cancelTime",
+        method: "DELETE",
+        data: {
+            ids,
+            type
+        }
+    })
+}
+
+//获取安排组详细信息 
+export const arrangeDetail = (id) => {
+    return http({
+        url: "/march/admin/arrange/detail",
+        method: "GET",
+        params: {
+            id
+        }
     })
 }

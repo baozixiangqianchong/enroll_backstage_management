@@ -104,7 +104,7 @@ const Arrange = async () => {
   const need_visit = ref(true);
   if (typedata.value[1] == "true") {
     need_visit.value = true;
-  } else if (typedata.value[1] == "fal se") {
+  } else if (typedata.value[1] == "false") {
     need_visit.value = false;
   }
   time.value[0] = time.value[0].toISOString().replace("Z", "+00:00");
@@ -131,7 +131,7 @@ const Arrange = async () => {
   if (allValues) {
     // 不含空值时发起网络请求
     const res = await addArrange(sendData.value);
-    // console.log(res.data);
+    console.log(res.data, "res");
     if (res.data == null) {
       ElMessage({
         message: "全部安排完啦！",
@@ -146,7 +146,8 @@ const Arrange = async () => {
       time.value = [null, null];
       //修改获取到的安排时间
       planData.value.forEach((item) => {
-        if (planData.value.type == "interview") {
+        console.log(planData.value, "planData.value");
+        if (res.data[0].type == "interview") {
           item.TimeArrange.visit = item.TimeArrange.interview;
           // console.log(item.TimeArrange.visit, item.TimeArrange.interview);
         }

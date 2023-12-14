@@ -1,13 +1,12 @@
 import { ElMessage } from "element-plus";
-import { userLogin } from '@/stores/user.js'; // 与后端的协商，websocket请求需要带上token参数
 let websock = null
 let messageCallback = null
 let errorCallback = null
 let wsUrl = ''
-let tryTime = 0
 
 // 接收ws后端返回的数据
 function websocketonmessage(e) {
+    console.log(e, "接收后端返回的数据");
     messageCallback(JSON.parse(e.data))
 }
 
@@ -53,7 +52,7 @@ function websocketclose(e) {
 }
 // 建立ws连接
 function websocketOpen(e) {
-    console.log('ws连接成功')
+    console.log('ws连接成功', e)
 }
 
 // 初始化weosocket
@@ -62,13 +61,8 @@ function initWebSocket() {
         ElMessage.error('您的浏览器不支持WebSocket，无法获取数据')
         return false
     }
-    //从pinia获取token数据
-    const user = userLogin()
-    //按照后端的要求拼接token数据
-    const token = user.userInfo.token
-    // const token = 'JWT=' + getToken()
     // ws请求完整地址
-    const requstWsUrl = wsUrl + '?' + token
+    const requstWsUrl = wsUrl
     websock = new WebSocket(requstWsUrl)
 
     websock.onmessage = function (e) {
@@ -98,7 +92,14 @@ export function sendWebsocket(url, agentData, successCallback, errCallback) {
     initWebSocket()
     messageCallback = successCallback
     errorCallback = errCallback
-    websocketSend(agentData)
+    // websocketSend(agentData)
+
+    if (!websock || websock.readyState === websock.CLOSED) {
+        initWebSocket();
+    }
+    setTimeout(() => {
+        websocketSend(agentData);
+    }, 500);
 }
 
 /**

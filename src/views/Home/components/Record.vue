@@ -1,286 +1,191 @@
 <template>
-  <div class="add">
-    <el-tabs v-model="activeName" type="border-card" class="demo-tabs">
-      <el-tab-pane label="宣讲" name="visit">
-        <div v-for="item in visitData" :key="item.id">
-          <div class="sessionName">
-            <span>场次名称：{{ item.Name }}</span>
-          </div>
-          <div class="place">
-            <span>宣讲地点：{{ item.place }}</span>
-          </div>
-          <div class="sheet">
-            <div class="xtx-cart-page">
-              <div class="container m-top-20">
-                <div class="cart">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th class="header" width="50">头像</th>
-                        <th class="header" width="205">宣讲时间</th>
-                        <th class="header" width="80">姓名</th>
-                        <th class="header" width="80">性别</th>
-                        <th class="header" width="145">班级</th>
-                        <th class="header" width="150">电话</th>
-                        <th class="header" width="150">QQ</th>
-                        <th class="header" width="150">编辑</th>
-                      </tr>
-                    </thead>
-                    <!-- 商品列表 -->
-                    <tbody>
-                      <tr v-for="i in item.Students" :key="i.ID">
-                        <td class="tc">
-                          <el-avatar :size="50" :src="i.avatar">
-                            <img :src="i.avatar" />
-                          </el-avatar>
-                        </td>
-                        <td class="tc">
-                          <p class="name ellipsis">
-                            {{ i.TimeArrange.visit }}
-                          </p>
-                        </td>
-                        <td class="tc">
-                          <p class="name ellipsis">
-                            {{ i.name }}
-                          </p>
-                        </td>
-                        <td class="tc">
-                          <p>{{ i.gender }}</p>
-                        </td>
-                        <td class="tc">
-                          <p>{{ i.class }}</p>
-                        </td>
-                        <td class="tc">
-                          <p class="f16 red">{{ i.phone }}</p>
-                        </td>
-                        <td class="tc">
-                          <p class="f16 red">{{ i.QQ }}</p>
-                        </td>
-                        <td class="tc">
-                          <el-popconfirm title="是否确认取消?">
-                            <template #reference>
-                              <el-button type="danger" link>取消安排</el-button>
-                            </template>
-                          </el-popconfirm>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
+  <el-row class="all">
+    <el-col :span="4" class="tree">
+      <div style="background-color: #fff">
+        <el-tree
+          :data="TreeData"
+          :props="props"
+          :style="{
+            'font-size': '14px',
+            margin: '0px',
+            padding: '10px 15px',
+          }"
+          :load="loadNode"
+          lazy
+          @node-click="handleNodeClick"
+        />
+      </div>
+    </el-col>
+    <el-col :span="20" class="main-view">
+      <div>
+        <div class="sessionName">
+          <span class="place">
+            <text> 场次名称：</text>
+            {{ arrangeData.Name ? arrangeData.Name : "暂无" }}
+          </span>
+          <span class="place">
+            <text>宣讲地点：</text>
+            {{ arrangeData.place ? arrangeData.place : "暂无" }}
+          </span>
+          <div>
+            <el-popconfirm title="确认取消吗?" @confirm="cancelPart">
+              <template #reference>
+                <el-button type="danger" :disabled="ids.length === 0">
+                  取消安排
+                </el-button>
+              </template>
+            </el-popconfirm>
           </div>
         </div>
-      </el-tab-pane>
-      <el-tab-pane label="面试" name="initerview">
-        <div v-for="item in interviewData" :key="item.id">
-          <div class="sessionName">
-            <span>场次名称：{{ item.Name }}</span>
-          </div>
-          <div class="place">
-            <span>面试地点：{{ item.place }}</span>
-          </div>
-          <div class="sheet">
-            <div class="xtx-cart-page">
-              <div class="container m-top-20">
-                <div class="cart">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th class="header" width="50">头像</th>
-                        <th class="header" width="175">面试时间</th>
-                        <th class="header" width="80">姓名</th>
-                        <th class="header" width="80">性别</th>
-                        <th class="header" width="145">班级</th>
-                        <th class="header" width="150">电话</th>
-                        <th class="header" width="150">QQ</th>
-                        <th class="header" width="150">编辑</th>
-                      </tr>
-                    </thead>
-                    <!-- 商品列表 -->
-                    <tbody>
-                      <tr v-for="i in item.Students" :key="i.ID">
-                        <td class="tc">
-                          <el-avatar :size="50" :src="i.avatar">
-                            <img :src="i.avatar" />
-                          </el-avatar>
-                        </td>
-                        <td class="tc">
-                          <p class="name ellipsis">
-                            {{ i.TimeArrange.interview }}
-                          </p>
-                        </td>
-                        <td class="tc">
-                          <p class="name ellipsis">
-                            {{ i.name }}
-                          </p>
-                        </td>
-                        <td class="tc">
-                          <p>{{ i.gender }}</p>
-                        </td>
-                        <td class="tc">
-                          <p>{{ i.class }}</p>
-                        </td>
-                        <td class="tc">
-                          <p class="f16 red">{{ i.phone }}</p>
-                        </td>
-                        <td class="tc">
-                          <p class="f16 red">{{ i.QQ }}</p>
-                        </td>
-                        <td class="tc">
-                          <el-popconfirm title="是否确认取消?">
-                            <template #reference>
-                              <el-button type="danger" link>取消安排</el-button>
-                            </template>
-                          </el-popconfirm>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+
+        <div class="sheet">
+          <el-table
+            :data="arrangeData.Students"
+            stripe
+            style="width: 100%"
+            @selection-change="handleSelectionChange"
+          >
+            <el-table-column type="selection" width="55" />
+            <el-table-column prop="avatar" label="头像" width="120">
+              <template #="scoped">
+                <div>
+                  <img :src="scoped.row.avatar" alt="" style="width: 80px" />
                 </div>
-              </div>
-            </div>
-          </div>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="TimeArrange.visit"
+              label="宣讲时间"
+              width="180"
+            >
+            </el-table-column>
+            <el-table-column prop="name" label="姓名" />
+            <el-table-column prop="gender" label="班级" />
+            <el-table-column prop="phone" label="电话" />
+            <el-table-column prop="QQ" label="QQ" />
+          </el-table>
         </div>
-      </el-tab-pane>
-    </el-tabs>
-  </div>
+      </div>
+    </el-col>
+  </el-row>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { getArrange } from "@/apis/home.js";
+import { getArrange, Menus, arrangeDetail, cancelTime } from "@/apis/home.js";
 
-//定义渲染数据
-const showData = ref([]);
-//定义宣讲数据
-const visitData = ref([]);
-//定义面试数据
-const interviewData = ref([]);
-//定义初始选项卡的选中
-const activeName = ref("visit");
-
-//声明获取初始数据的方法
-const Arrange = async () => {
-  const res = await getArrange();
-  //修改获得的数据时间格式
-  res.data.forEach((item) => {
-    // 使用toLocaleString方法并传递适当的选项
-    item.Students.forEach((i) => {
-      const begin = new Date(i.TimeArrange.interview);
-      const plan = new Date(i.TimeArrange.visit);
-      i.TimeArrange.interview = begin.toLocaleString(undefined, {
-        year: "numeric",
-        month: "numeric",
-        day: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-      });
-      i.TimeArrange.visit = plan.toLocaleString(undefined, {
-        year: "numeric",
-        month: "numeric",
-        day: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-      });
-    });
-  });
-
-  // 过滤得到宣讲和面试的数据
-  visitData.value = res.data.filter((item) => item.type == "visit");
-  interviewData.value = res.data.filter((item) => item.type === "interview");
+//定义取消数据
+const ids = ref([]);
+//定义展示数据
+const arrangeData = ref([]);
+// 定义当前的格式
+const type = ref(0);
+// 复选框
+const handleSelectionChange = (val) => {
+  ids.value = val.map((item) => item.ID);
+  console.log(val, ids.value, "val");
 };
-onMounted(() => {
-  Arrange();
-});
+
+// 树状数据展示格式
+const props = {
+  children: "children",
+  label: "name",
+  isLeaf: "leaf",
+};
+
+//展示树状组件信息
+const TreeData = ref([]);
+// 懒加载
+const loadNode = async (node, resolve) => {
+  console.log(node.level);
+  if (node.level === 0) {
+    return resolve([
+      {
+        id: 3,
+        name: "宣讲",
+        type: "",
+      },
+      {
+        id: 2,
+        name: "面试",
+        type: "",
+      },
+    ]);
+  }
+  if (node.level === 1) {
+    console.log(node.data.id, "node.id");
+    Menus(node.data.id).then((res) => {
+      const newData = res.data.map((item) => {
+        return {
+          ...item,
+          leaf: true,
+        };
+      });
+      resolve(newData);
+    });
+  }
+};
+
+//点击树状组件
+const handleNodeClick = async (data) => {
+  if (data.type != "") {
+    const res = await arrangeDetail(data.id);
+    console.log(res);
+    if (res.data) {
+      type.value = 1;
+      // 使用toLocaleString方法并传递适当的选项
+      res.data.Students.forEach((i) => {
+        if (res.data.type == "interview") {
+          type.value = 2;
+          i.TimeArrange.visit = i.TimeArrange.interview;
+        }
+        i.TimeArrange.visit = formatDatePart(i.TimeArrange.visit);
+      });
+    }
+    arrangeData.value = res.data;
+  }
+};
+
+// 转换时间格式
+const formatDatePart = (dateTime) => {
+  const dateTimeObject = new Date(dateTime);
+  const year = dateTimeObject.getFullYear().toString().slice(2); // 获取年份的后两位
+  const month = ("0" + (dateTimeObject.getMonth() + 1)).slice(-2); // 获取月份，并确保是两位数
+  const day = ("0" + dateTimeObject.getDate()).slice(-2); // 获取日期，并确保是两位数
+  const hours = ("0" + dateTimeObject.getHours()).slice(-2); // 获取小时，并确保是两位数
+  const minutes = ("0" + dateTimeObject.getMinutes()).slice(-2); // 获取分钟，并确保是两位数
+
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+};
+
+//取消部分安排学生
+const cancelPart = async () => {
+  console.log(ids.value, type.value, "数据");
+  await cancelTime(ids.value, type.value);
+};
+
+onMounted(() => {});
 </script>
 
 <style lang="scss" scoped>
-.add {
+.all {
   width: 100%;
   height: 100%;
-  position: absolute;
-  overflow: auto;
-  border-radius: 15px;
-  .demo-tabs {
+  background-color: #f0f2f5;
+  .tree {
+    padding: 0 15px;
+  }
+  .main-view {
+    background-color: #fff;
     .sessionName {
-      padding: 10px;
-      font-size: 22px;
-    }
-    .place {
-      padding: 10px;
-      font-size: 22px;
-    }
-    .sheet {
-      border-radius: 15px;
-      border-top: 1px solid #eceaea;
-      height: 80%;
-      overflow: auto;
-      .xtx-cart-page {
-        height: 100%;
-        border-radius: 20px;
-        .cart {
-          background: #fff;
-          color: #666;
-          border-radius: 20px;
-
-          table {
-            .header {
-              font-weight: 600;
-              color: #909399;
-            }
-            border-spacing: 0;
-            border-collapse: collapse;
-            line-height: 24px;
-            width: 100%;
-            th,
-            td {
-              padding: 10px 10px;
-              border-bottom: 1px solid #e6e5e5;
-
-              &:first-child {
-                text-align: left;
-                padding-left: 30px;
-                color: #999;
-              }
-            }
-            thead {
-              tr {
-                background-color: #f7f7f7;
-              }
-            }
-            tr:hover {
-              background-color: #f7f7f7;
-            }
-            th {
-              font-size: 16px;
-              font-weight: normal;
-              line-height: 50px;
-            }
-          }
-        }
-        .tc {
-          text-align: center;
-        }
-
-        .f16 {
-          font-size: 16px;
-        }
-
-        .goods {
-          > div {
-            width: 150px;
-            font-size: 16px;
-            padding-left: 10px;
-          }
-        }
-
-        .action {
-          .red {
-            font-size: 18px;
-            margin-right: 20px;
-            font-weight: bold;
-          }
+      padding: 15px;
+      display: flex;
+      .place {
+        padding-right: 25px;
+        font-size: 23px;
+        text {
+          font-size: 18px;
+          color: #6b6969;
         }
       }
     }
