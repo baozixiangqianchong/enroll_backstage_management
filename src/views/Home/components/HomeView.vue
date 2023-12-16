@@ -1,6 +1,26 @@
 <template>
   <!-- 系统首页界面 -->
   <div class="add">
+    <div class="male-female">
+      <!-- 饼图 -->
+      <!-- <div class="title">各专业占比</div> -->
+      <div class="female">
+        <div class="per">
+          <h2>男女占比</h2>
+          <div class="sex">
+            <img src="../../../assets/img/nv.png" />
+            <div id="career" style="width: 240px; height: 180px"></div>
+          </div>
+        </div>
+        <div class="per">
+          <h2>各专业占比</h2>
+          <div class="sex">
+            <img src="../../../assets/img/man.png" alt="" />
+            <div id="gender" style="width: 240px; height: 180px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="lcm">
       <!-- 三个模块 -->
       <div class="lcm-junior">
@@ -31,25 +51,8 @@
         </div>
       </div>
     </div>
-    <div class="male-female">
-      <!-- 饼图 -->
-      <!-- <div class="title">各专业占比</div> -->
-      <div class="female">
-        <div class="per">
-          <h2>男女占比</h2>
-          <div class="sex">
-            <img src="../../../assets/img/nv.png" />
-            <div id="career" style="width: 240px; height: 160px"></div>
-          </div>
-        </div>
-        <div class="per">
-          <h2>各专业占比</h2>
-          <div class="sex">
-            <img src="../../../assets/img/man.png" alt="" />
-            <div id="gender" style="width: 240px; height: 160px"></div>
-          </div>
-        </div>
-      </div>
+    <div class="flow">
+      <div id="area" style="width: 600px; height: 360px"></div>
     </div>
 
     <div class="wd">
@@ -107,9 +110,6 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="flow">
-      <div id="area" style="width: 600px; height: 360px"></div>
     </div>
   </div>
 </template>
@@ -346,7 +346,7 @@ onUnmounted(() => {
 <style lang="scss" scoped>
 .add {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
+  grid-template-columns: 1.2fr 1fr;
   grid-template-rows: 0.5fr 1fr;
   grid-gap: 20px;
   background-color: #f0f2f5;

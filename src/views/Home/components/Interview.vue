@@ -22,11 +22,41 @@
     </el-col>
     <el-col :span="20" class="main-view">
       <div style="float: right; margin: 20px">
-        <el-button :icon="Plus" type="success">新增列</el-button>
+        <el-popconfirm title="是否在最后新增一列?" @confirm="handleAddedTrain">
+          <template #reference>
+            <el-button
+              :icon="Plus"
+              type="success"
+              :disabled="tableData.length == 0"
+            >
+              新增列
+            </el-button>
+          </template>
+        </el-popconfirm>
+        <el-popconfirm title="是否删除最后一列?" @confirm="handleDeleteTrain">
+          <template #reference>
+            <el-button
+              :icon="Delete"
+              type="danger"
+              :disabled="tableData.length == 0"
+            >
+              删除列
+            </el-button>
+          </template>
+        </el-popconfirm>
       </div>
-      <el-table :data="tableData" :border="true" style="width: 100%">
-        <el-table-column prop="name" width="100" />
-        <el-table-column v-for="(item, index) in 2" :key="index" width="300">
+      <el-table :data="tableData" :border="true" style="padding-left: 1px">
+        <el-table-column prop="name" width="80">
+          <template #="scoped">
+            <div style="padding-left: 10px">{{ scoped.row.name }}</div>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+          v-for="(item, index) in loading"
+          :key="index"
+          width="300"
+        >
           <template #="scoped">
             <div v-if="scoped.row.Record[index]">
               <Editor
@@ -42,32 +72,22 @@
   </el-row>
 </template>
 <script setup>
-import { Plus } from "@element-plus/icons-vue";
+import { Plus, Delete } from "@element-plus/icons-vue";
 
-import { Menus, InterviewRecord } from "@/apis/home.js";
+import {
+  Menus,
+  InterviewRecord,
+  AddedTrain,
+  DeleteTrain,
+} from "@/apis/home.js";
 
-import { sendWebsocket, closeWebsocket } from "@/utils/websocket.js";
+import {
+  sendWebsocket,
+  closeWebsocket,
+  websocketSend,
+} from "@/utils/websocket.js";
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import { Editor } from "@wangeditor/editor-for-vue";
-
-const handleBlur = (e) => {
-  console.log("e", e);
-  // 防止用户多次连续点击发起请求，所以要先关闭上次的ws请求。
-  closeWebsocket();
-  // 发起ws请求
-  sendWebsocket(
-    "ws://39.101.77.206:8181/march/admin/InterviewRecord",
-    e,
-    wsMessage,
-    wsError
-  );
-};
-
-// 树状数据展示格式
-const props = {
-  children: "children",
-  label: "name",
-};
 
 // 树状筛选框
 const query = ref("");
@@ -78,58 +98,86 @@ const treeRef = ref([]);
 //展示树状组件信息
 const TreeData = ref([]);
 
+// 树状数据展示格式
+const props = {
+  children: "children",
+  label: "name",
+};
+
+// 展示数据
+const tableData = ref([]);
+
+// 评论人的数量
+const loading = ref(0);
+
+//场id
+const arrangeId = ref();
+
+// 初始化侧边数据
 const menus = async () => {
   const res = await Menus(2);
   treeRef.value = res.data;
   TreeData.value = treeRef.value;
 };
+
+// 搜搜框
 const onQueryChanged = (query) => {
   // includes判断是否包含
   TreeData.value = treeRef.value.filter((item) => item.name.includes(query));
 };
 
-const tableData = ref([]);
-
 //点击树状组件
 const handleNodeClick = (data) => {
-  InterviewRecord(data.id).then((res) => {
+  showData(data.id);
+};
+
+// 请求数据接口方法
+const showData = (id) => {
+  InterviewRecord(id).then((res) => {
     localStorage.setItem("arrangeId", res.data.id);
+    arrangeId.value = res.data.id;
     tableData.value = res.data.Students;
+    loading.value = res.data.Students[0].Record.length;
   });
 };
 
 onMounted(() => {
   menus();
+  sendWebsocket(wsMessage, wsError);
 });
 
+//富文本框失去焦点
+const handleBlur = (e) => {
+  // 发起ws数据
+  websocketSend(e);
+};
+
+// 监听服务器传来的变化
 const wsMessage = (data) => {
   const dataJson = data;
-  console.log("dataJson", dataJson);
   // 这里写拿到数据后的业务代码
+  if (tableData.value.length !== 0) {
+    console.log(tableData.value);
+    tableData.value
+      .flatMap((innerArray) => innerArray)
+      .forEach((element) => {
+        element.Record.forEach((a) => {
+          console.log(dataJson.arrange_id, a.arrange_id);
+          if (
+            dataJson.arrange_id == a.arrange_id &&
+            dataJson.content_id == a.content_id &&
+            dataJson.student_id == a.student_id
+          ) {
+            a.content = dataJson.content;
+          }
+        });
+      });
+  }
 };
 
 const wsError = () => {
   // 比如取消页面的loading
-};
-
-const requestWs = (id, index, a) => {
-  // 防止用户多次连续点击发起请求，所以要先关闭上次的ws请求。
-  closeWebsocket();
-  // 跟后端协商，需要什么参数数据给后台
-  const arrange_id = localStorage.getItem("arrangeId");
-  const obj = {
-    arrange_id: Number(arrange_id),
-    student_id: id,
-    content_id: index,
-    content: html.value,
-  };
-  // 发起ws请求
-  sendWebsocket(
-    "ws://39.101.77.206:8181/march/admin/InterviewRecord",
-    obj,
-    wsMessage,
-    wsError
-  );
+  console.log("ws连接错误的回调函数");
 };
 
 // 页面销毁时关闭ws。因为有可能ws连接接收数据尚未完成，用户就跳转了页面
@@ -137,6 +185,18 @@ const requestWs = (id, index, a) => {
 onBeforeUnmount(() => {
   closeWebsocket();
 });
+
+// 新增列
+const handleAddedTrain = async () => {
+  await AddedTrain(arrangeId.value);
+  showData(arrangeId.value);
+};
+
+// 删除列
+const handleDeleteTrain = async () => {
+  await DeleteTrain(arrangeId.value, loading.value - 1);
+  showData(arrangeId.value);
+};
 </script>
 
 <style lang="scss">

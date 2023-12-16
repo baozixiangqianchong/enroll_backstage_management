@@ -187,17 +187,27 @@ export const Menus = (type) => {
 }
 
 // 取消学生的安排
-export const cancelTime = (ids, type) => {
+export const cancelTime = (ids, type, arrange_id) => {
     return http({
         url: "/march/admin/arrange/cancelTime",
         method: "DELETE",
         data: {
             ids,
-            type
+            type,
+            arrange_id
         }
     })
 }
-
+// 取消整场学生的安排
+export const cancelField = (id) => {
+    return http({
+        url: "/march/admin/arrange/delete",
+        method: "DELETE",
+        data: {
+            id
+        }
+    })
+}
 //获取安排组详细信息 
 export const arrangeDetail = (id) => {
     return http({
@@ -205,6 +215,28 @@ export const arrangeDetail = (id) => {
         method: "GET",
         params: {
             id
+        }
+    })
+}
+
+// 新增列
+export const AddedTrain = (id) => {
+    return http({
+        url: "/march/admin/arrange/col",
+        method: "POST",
+        params: {
+            id
+        }
+    })
+}
+// 删除列
+export const DeleteTrain = (arrange_id, content_id) => {
+    return http({
+        url: "/march/admin/arrange/col",
+        method: "DELETE",
+        params: {
+            arrange_id,
+            content_id
         }
     })
 }
