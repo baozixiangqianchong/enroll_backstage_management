@@ -63,7 +63,7 @@
 import { ref, onMounted } from "vue";
 import perlist from "@/components/PerList.vue";
 import Editor from "@/components/Editor.vue";
-import { SendAPI, addDraft, updateDraft } from "@/apis/home.js";
+import { SendAPI, addDraft, updateDraft } from "@/apis/Info.js";
 import { setStore } from "@/stores/set.js";
 import { InformWay } from "@/stores/inform.js";
 
@@ -87,11 +87,8 @@ const Selected = ref([]);
 
 //收件人信息
 const addRessee = () => {
-  console.log("addRessee，sendlist.setflag", sendlist.setflag);
   //   //将传过来的数据赋值给数组
   Selected.value = JSON.parse(JSON.stringify(sendlist.setflag));
-
-  console.log("addRessee，Selected.value", Selected.value);
   state(); // 更改状态
   //   //过滤得到ID的数组，用于发送接口
   if (!Selected.value) {
@@ -110,7 +107,6 @@ const handleClose = () => {
   //将传过来的数据赋值给数组
   Selected.value = JSON.parse(JSON.stringify(sendlist.setflag));
   state(); // 更改状态
-  console.log("amend,Selected.value", Selected.value);
   data.value.students_id = Selected.value.map((obj) => obj.ID);
 };
 
@@ -200,7 +196,6 @@ const send = async () => {
 };
 // 更改状态
 const state = () => {
-  // console.log("state,Selected.value", Selected.value);
   // if (!Selected.value)
   Selected.value.forEach((item) => {
     if (item.state == 1) {

@@ -20,7 +20,7 @@ const router = createRouter({
         {
           path: "record",
           name: "record",
-          component: () => import("../views/Home/components/Record.vue")
+          component: () => import("../views/Home/components/arrangeRecord.vue")
         }, {
           path: 'crew',
           name: "crew",

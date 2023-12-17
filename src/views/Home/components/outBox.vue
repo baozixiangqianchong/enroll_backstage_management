@@ -69,7 +69,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { getAllMsg, getDetailsMsg } from "@/apis/home.js";
+import { getAllMsg, getDetailsMsg } from "@/apis/Info.js";
 
 //抽屉是否打开
 const drawer = ref(false);

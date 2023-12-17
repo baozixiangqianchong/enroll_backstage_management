@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { getAllSignUpAPI, getScreenAPI } from "@/apis/home.js";
+import { getAllSignUpAPI, getScreenAPI } from "@/apis/apply.js";
 
 export const setStore = defineStore('setInter',
     () => {
@@ -49,7 +49,6 @@ export const setStore = defineStore('setInter',
         //筛选过滤，flag=true的对象
         const spillFlag = () => {
             setflag.value = setInfo.value.filter(item => item.flag === true)
-            console.log("spillFlag", setflag.value);
         }
 
         //单选
@@ -60,7 +59,6 @@ export const setStore = defineStore('setInter',
         }
         //多选
         const isAll = computed(() => {
-            // console.log("多选");
             // return setInfo.value.every((item) => item.flag)
             const values = Object.values(setInfo.value);
             // Object.values() 来获取对象中的值

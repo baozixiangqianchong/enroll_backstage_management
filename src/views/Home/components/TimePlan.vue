@@ -58,11 +58,11 @@
         <el-table-column prop="class" label="班级" />
         <el-table-column prop="phone" label="电话" />
         <el-table-column prop="QQ" label="QQ" />
-        <el-table-column prop="ID" label="修改时间">
+        <!-- <el-table-column prop="ID" label="修改时间">
           <template v-slot="{ row }">
             <el-button @click="amendTime(row.ID)">修改</el-button>
           </template>
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
     </div>
   </div>
@@ -70,7 +70,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { addArrange } from "@/apis/home.js";
+import { addArrange } from "@/apis/arrange.js";
 // 定义输入的时间间隔
 const interval = ref("");
 //场次名称
@@ -131,7 +131,6 @@ const Arrange = async () => {
   if (allValues) {
     // 不含空值时发起网络请求
     const res = await addArrange(sendData.value);
-    console.log(res.data, "res");
     if (res.data == null) {
       ElMessage({
         message: "全部安排完啦！",
@@ -146,12 +145,9 @@ const Arrange = async () => {
       time.value = [null, null];
       //修改获取到的安排时间
       planData.value.forEach((item) => {
-        console.log(planData.value, "planData.value");
         if (res.data[0].type == "interview") {
           item.TimeArrange.visit = item.TimeArrange.interview;
-          // console.log(item.TimeArrange.visit, item.TimeArrange.interview);
         }
-        // console.log("item.TimeArrange.visit", item.TimeArrange.visit);
         const date = new Date(item.TimeArrange.visit);
         // 使用toLocaleString方法并传递适当的选项
         item.TimeArrange.visit = date.toLocaleString(undefined, {
@@ -162,9 +158,6 @@ const Arrange = async () => {
           minute: "numeric",
         });
       });
-
-      console.log("res.data.Students", res.data[0].Students);
-      console.log(planData.value, "res====");
     }
   } else {
     ElMessage({

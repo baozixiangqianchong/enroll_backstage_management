@@ -72,13 +72,9 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import {
-  getArrange,
-  cancelField,
-  Menus,
-  arrangeDetail,
-  cancelTime,
-} from "@/apis/home.js";
+import { Menus } from "@/apis/home.js";
+
+import { arrangeDetail, cancelField, cancelTime } from "@/apis/arrange.js";
 
 //定义取消数据
 const ids = ref([]);
@@ -92,7 +88,6 @@ const arrangeId = ref();
 // 复选框
 const handleSelectionChange = (val) => {
   ids.value = val.map((item) => item.ID);
-  console.log(val, ids.value, "val");
 };
 
 // 树状数据展示格式
@@ -106,7 +101,6 @@ const props = {
 const TreeData = ref([]);
 // 懒加载
 const loadNode = async (node, resolve) => {
-  console.log(node.level);
   if (node.level === 0) {
     return resolve([
       {
@@ -122,7 +116,6 @@ const loadNode = async (node, resolve) => {
     ]);
   }
   if (node.level === 1) {
-    console.log(node.data.id, "node.id");
     Menus(node.data.id).then((res) => {
       const newData = res.data.map((item) => {
         return {
@@ -137,7 +130,6 @@ const loadNode = async (node, resolve) => {
 
 //点击树状组件
 const handleNodeClick = async (data) => {
-  console.log(data);
   arrangeId.value = data.id;
   // 不是第一层就请求接口
   if (data.type != "") {
@@ -155,8 +147,6 @@ const handleNodeClick = async (data) => {
     }
     arrangeData.value = res.data;
     if (res.data.Students.length == 0) {
-      console.log("stu为零");
-      console.log(res.data.id);
       let arrId = [];
       arrId.push(res.data.id);
       await cancelField(arrId);
@@ -179,7 +169,6 @@ const formatDatePart = (dateTime) => {
 
 //取消部分安排学生
 const cancelPart = async () => {
-  console.log(ids.value, type.value, arrangeId.value, "数据");
   await cancelTime(ids.value, type.value, arrangeId.value);
 };
 

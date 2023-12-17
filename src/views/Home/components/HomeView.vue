@@ -1,115 +1,87 @@
 <template>
   <!-- 系统首页界面 -->
-  <div class="add">
-    <div class="male-female">
-      <!-- 饼图 -->
-      <!-- <div class="title">各专业占比</div> -->
-      <div class="female">
-        <div class="per">
-          <h2>男女占比</h2>
-          <div class="sex">
-            <img src="../../../assets/img/nv.png" />
-            <div id="career" style="width: 240px; height: 180px"></div>
+  <div class="all">
+    <div class="left-right">
+      <div class="left_side">
+        <div class="lcm">
+          <!-- 三个模块 -->
+          <div class="lcm-junior" style="background-color: #fc9b46">
+            <div class="logo">
+              <i class="iconfont icon-renqun"></i>
+            </div>
+            <div class="collect">
+              <span class="text">总人数</span>
+              <span class="number" style="color: #dc654bda">
+                {{ allData.sum }}
+              </span>
+            </div>
           </div>
-        </div>
-        <div class="per">
-          <h2>各专业占比</h2>
-          <div class="sex">
-            <img src="../../../assets/img/man.png" alt="" />
-            <div id="gender" style="width: 240px; height: 180px"></div>
+          <div class="lcm-junior" style="background-color: #4d84f4">
+            <div class="logo">
+              <i class="iconfont icon-renqun"></i>
+            </div>
+            <div class="collect">
+              <span class="text">已面试</span>
+              <span class="number" style="color: #2e65ef">
+                {{ allData.interviewed_num }}
+              </span>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="lcm">
-      <!-- 三个模块 -->
-      <div class="lcm-junior">
-        <div class="collect">
-          <span class="text">总人数</span>
-          <span class="number" style="color: #1ec468">
-            {{ allData.sum }}
-          </span>
-          <span class="text">人</span>
-        </div>
-      </div>
-      <div class="lcm-junior">
-        <div class="collect">
-          <span class="text">已面试</span>
-          <span class="number" style="color: #fba80a">
-            {{ allData.interviewed_num }}
-          </span>
-          <span class="text">人</span>
-        </div>
-      </div>
-      <div class="lcm-junior">
-        <div class="collect">
-          <span class="text">已录取</span>
-          <span class="number" style="color: #239cfc">
-            {{ allData.enroll_num }}
-          </span>
-          <span class="text">人</span>
-        </div>
-      </div>
-    </div>
-    <div class="flow">
-      <div id="area" style="width: 600px; height: 360px"></div>
-    </div>
 
-    <div class="wd">
-      <!-- 表格数据 -->
-      <div class="sheet">
-        <div class="xtx-cart-page">
-          <div class="container m-top-20">
-            <div class="cart">
-              <table>
-                <thead class="thead">
-                  <tr>
-                    <th>专业</th>
-                    <th>男生</th>
-                    <th>女生</th>
-                    <th>总人数</th>
-                    <th>录取人数</th>
-                  </tr>
-                </thead>
-                <!-- 商品列表 -->
-                <tbody>
-                  <tr v-for="i in tableData" :key="i.ID">
-                    <td>
-                      <div class="tc">
-                        {{ i.type }}
-                      </div>
-                    </td>
-                    <td>
-                      <div class="tc">
-                        {{ i.boy_num }}
-                      </div>
-                    </td>
-                    <td>
-                      <div class="tc">
-                        {{ i.girl_num }}
-                      </div>
-                    </td>
-                    <td>
-                      <div class="tc">
-                        <div>
-                          {{ i.sum }}
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="tc">
-                        <div>
-                          {{ i.enroll_num }}
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+          <div class="lcm-junior" style="background-color: #6bdfcf">
+            <div class="logo">
+              <i class="iconfont icon-renqun"></i>
+            </div>
+            <div class="collect">
+              <span class="text">已录取</span>
+              <span class="number" style="color: #2dcfc0">
+                {{ allData.enroll_num }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="male-female">
+          <!-- 饼图 -->
+          <div class="female">
+            <div class="per">
+              <div class="title">男女占比</div>
+              <div class="sex">
+                <div>
+                  <img src="../../../assets/img/nv.png" />
+                  <div style="height: 20px"></div>
+                  <img src="../../../assets/img/man.png" alt="" />
+                </div>
+
+                <div id="career" style="width: 240px; height: 180px"></div>
+              </div>
+            </div>
+            <div class="per">
+              <div class="title">各专业占比</div>
+              <div class="sex">
+                <div id="gender" style="width: 240px; height: 180px"></div>
+              </div>
             </div>
           </div>
         </div>
       </div>
+      <div class="right_side">
+        <div class="wd">
+          <!-- 表格数据 -->
+          <div class="sheet">
+            <el-table :data="tableData" style="width: 95%" height="370">
+              <el-table-column prop="type" label="专业" align="center" />
+              <el-table-column prop="boy_num" label="男生" />
+              <el-table-column prop="girl_num" label="女生" />
+              <el-table-column prop="sum" label="总人数" />
+              <el-table-column prop="enroll_num" label="录取人数" />
+            </el-table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div id="area" style="width: 100%; height: 100%"></div>
     </div>
   </div>
 </template>
@@ -117,7 +89,7 @@
 <script setup>
 import { onMounted, ref, onUnmounted } from "vue";
 import echarts from "../../../assets/echarts.js";
-import { BySpeciaIty } from "../../../apis/home";
+import { BySpeciaIty, getSeven } from "@/apis/home.js";
 
 //统计总的报名情况，生成表格
 const tableData = ref([]);
@@ -128,11 +100,12 @@ const allData = ref({
 });
 
 //饼图男女
-const genderdata = ref([]);
+const sumdata = ref([]);
 //饼图专业
-const careerdata = ref([]);
-//报名人数面积图
-const areadata = ref([]);
+const careerdata = ref([
+  { value: 0, name: "男" },
+  { value: 0, name: "女" },
+]);
 
 //定义Echarts
 const charPiecareer = ref();
@@ -157,12 +130,12 @@ const echartsResize = () => {
   if (charPiecareer.value && chartPiegender.value && charArea.value) {
     // 使用刚指定的配置项option和数据显示图表。
     charPiecareer.value.setOption(piecareerdata.value);
-    chartPiegender.value.setOption(piegenderdata.value);
+    chartPiegender.value.setOption(piesumdata.value);
     charArea.value.setOption(areasigndata.value);
   }
 };
 
-const piegenderdata = ref({
+const piesumdata = ref({
   title: {
     // text: "男女占比",
     fontSize: 10,
@@ -217,7 +190,7 @@ const piegenderdata = ref({
 const piecareerdata = ref({
   title: {
     // text: "各专业占比",
-    // subtext: "",
+    subtext: "",
     fontSize: 10,
     left: "center",
     fontWeight: "bold",
@@ -306,7 +279,7 @@ const areasigndata = ref({
       emphasis: {
         focus: "series",
       },
-      data: [0, 2, 1, 34, 30, 0, 20],
+      data: [0, 0, 0, 0, 0, 0, 0],
     },
   ],
 });
@@ -317,21 +290,59 @@ const formData = async () => {
   tableData.value = res.data.filter((item) => item.type != "总");
   allData.value = res.data[0];
   // 使用map方法提取type和sum属性的值
-  genderdata.value = tableData.value.map((item) => ({
-    value: item.boy_num,
+  // 各专业总人数占比
+  sumdata.value = tableData.value.map((item) => ({
+    value: item.sum,
     name: item.type,
   }));
-  careerdata.value = tableData.value.map((item) => ({
-    value: item.girl_num,
-    name: item.type,
+  // 得到男女
+  let additio = tableData.value.map((item) => ({
+    girl: item.girl_num,
+    boy: item.boy_num,
   }));
-  piegenderdata.value.series[0].data = genderdata.value;
+  let girl_num = 0;
+  let boy_num = 0;
+  // 进行计算男女的总数
+  additio.forEach((item) => {
+    girl_num = girl_num + item.girl;
+    boy_num = boy_num + item.boy;
+  });
+  careerdata.value[0].value = boy_num;
+  careerdata.value[1].value = girl_num;
+  piesumdata.value.series[0].data = sumdata.value;
   piecareerdata.value.series[0].data = careerdata.value;
   echartsResize();
 };
 
+// 获取近七天报名人数
+const getSevenDay = async () => {
+  //报名人数面积图
+  const seven_count = ref([]);
+  const seven_days = ref([]);
+  const res = await getSeven();
+  // 人数数组
+  seven_count.value = res.data.map((item) => item.Count);
+  // 日期数组
+  seven_days.value = res.data.map((item) => formatDatePart(item.Date));
+  areasigndata.value.series[0].data = seven_count.value;
+  areasigndata.value.xAxis[0].data = seven_days.value;
+};
+
+// 转换时间格式
+const formatDatePart = (dateTime) => {
+  const dateTimeObject = new Date(dateTime);
+  const year = dateTimeObject.getFullYear().toString().slice(2); // 获取年份的后两位
+  const month = ("0" + (dateTimeObject.getMonth() + 1)).slice(-2); // 获取月份，并确保是两位数
+  const day = ("0" + dateTimeObject.getDate()).slice(-2); // 获取日期，并确保是两位数
+  // const hours = ("0" + dateTimeObject.getHours()).slice(-2); // 获取小时，并确保是两位数
+  // const minutes = ("0" + dateTimeObject.getMinutes()).slice(-2); // 获取分钟，并确保是两位数
+
+  return `${year}-${month}-${day}`;
+};
+
 onMounted(() => {
   formData();
+  getSevenDay();
 });
 onUnmounted(() => {
   //跳转页面销毁图表
@@ -344,130 +355,115 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.add {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  grid-template-rows: 0.5fr 1fr;
-  grid-gap: 20px;
+.all {
   background-color: #f0f2f5;
   height: 100%;
+  // width: 100%;
   overflow: auto;
-
+  .left-right {
+    display: flex;
+    grid-gap: 20px;
+  }
   .wd {
     background-color: #fff;
     border-radius: 15px;
 
     .sheet {
-      border-radius: 15px;
+      padding-top: 11px;
+      display: flex;
+      justify-content: center;
       border-top: 1px solid #eceaea;
       width: 100%;
-
-      .xtx-cart-page {
-        .cart {
-          background: #fff;
-          color: #666;
-          table {
-            border-spacing: 0;
-            border-collapse: collapse;
-            line-height: 24px;
-            width: 100%;
-            th,
-            td {
-              padding: 10px;
-              border-bottom: 1px solid #e6e5e5;
-              color: #999;
-            }
-            tbody {
-              tr:hover {
-                background-color: #f7f7f7;
-              }
-            }
-            th {
-              font-size: 16px;
-              font-weight: bold;
-              line-height: 30px;
-            }
-            .thead {
-              background-color: #ecf3fe;
-            }
-          }
-        }
-        .tc {
-          text-align: center;
-        }
-
-        .f16 {
-          font-size: 16px;
-        }
-      }
     }
   }
-  .flow {
-    background-color: #fff;
-    border-radius: 15px;
-    padding-top: 15px;
-  }
+  .left_side {
+    width: 55%;
+    height: 100%;
 
-  .lcm {
-    display: flex;
-    list-style-type: none;
-    justify-content: space-between;
-    justify-items: center;
-    align-items: center;
-    .lcm-junior {
-      width: 31%;
-      height: 60%;
-      .collect {
-        background-color: #5ae5b3;
-        display: flex;
-        justify-content: center; /* 水平居中 */
-        align-items: center; /* 垂直居中 */
-        width: 100%;
-        height: 100%;
-        border-radius: 15px;
-        .text {
-          font-size: 20px;
-          color: #666;
-        }
-        .number {
-          font-size: 32px;
-          font-weight: 600;
-          padding: 0 5px;
-        }
-      }
-    }
-  }
-  .male-female {
-    background-color: #fff;
-    border-radius: 15px;
-    .title {
-      font-weight: 600;
-      font-size: 20px;
-      color: #666;
-      text-align: center;
-      margin: 15px;
-    }
-    .female {
+    .lcm {
       display: flex;
-      justify-content: space-around;
-      align-items: center;
-      .per {
-        text-align: center;
-        h2 {
-          margin: 5px;
+      justify-content: space-between;
+      background-color: #fff;
+      padding: 20px 20px;
+      margin-bottom: 20px;
+      border-radius: 15px;
+      .lcm-junior {
+        width: 30%;
+        padding: 5px;
+        border-radius: 15px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center; /* 垂直居中 */
+        .logo {
+          padding: 10px;
+
+          i {
+            font-size: 60px;
+            color: #555555a9;
+          }
         }
-        .sex {
-          display: flex;
-          justify-content: space-around;
-          align-items: center;
-          img {
-            margin: 0 10px;
-            width: 40px;
-            height: 43px;
+        .collect {
+          padding: 10px;
+          span {
+            display: block;
+          }
+          .text {
+            font-size: 22px;
+            width: 70px;
+            color: #ffffffdd;
+          }
+          .number {
+            font-size: 32px;
+            font-weight: 600;
+            float: right;
+            padding: 0 10px;
+          }
+        }
+      }
+    }
+
+    .male-female {
+      background-color: #fff;
+      border-radius: 15px;
+      margin-bottom: 20px;
+
+      .female {
+        display: flex;
+        justify-content: space-around;
+        .per {
+          .title {
+            font-weight: 600;
+            font-size: 20px;
+            color: #666666f6;
+            margin: 8px 0;
+          }
+          .sex {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            img {
+              margin: 0 10px;
+              width: 40px;
+              height: 43px;
+            }
           }
         }
       }
     }
   }
+  .right_side {
+    width: 43%;
+    height: 100%;
+    .copy {
+      height: 36%;
+    }
+  }
+}
+.flow {
+  background-color: #fff;
+  border-radius: 15px;
+  padding-top: 15px;
+  width: 99%;
+  height: 320px;
 }
 </style>

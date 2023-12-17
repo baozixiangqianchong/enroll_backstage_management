@@ -42,7 +42,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { getAllDraft, deleteDraft } from "@/apis/home.js";
+import { getAllDraft, deleteDraft } from "@/apis/Info.js";
 import { useRouter } from "vue-router";
 import { InformWay } from "@/stores/inform.js";
 
@@ -129,7 +129,6 @@ const Delete = async () => {
 //点击信息，跳转到编辑页面
 const Draft = (i) => {
   //将选中的信息保存道本地
-  console.log("草稿箱", i.ID, begindata.value);
   //过滤得到自己想要的数据
   const item = begindata.value.find((item) => item.ID === i.ID);
   //将数据保存本地，跳转页面

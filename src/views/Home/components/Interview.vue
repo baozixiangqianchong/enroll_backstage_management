@@ -74,13 +74,8 @@
 <script setup>
 import { Plus, Delete } from "@element-plus/icons-vue";
 
-import {
-  Menus,
-  InterviewRecord,
-  AddedTrain,
-  DeleteTrain,
-} from "@/apis/home.js";
-
+import { Menus, InterviewRecord } from "@/apis/home.js";
+import { AddedTrain, DeleteTrain } from "@/apis/record.js";
 import {
   sendWebsocket,
   closeWebsocket,
@@ -157,18 +152,16 @@ const wsMessage = (data) => {
   const dataJson = data;
   // 这里写拿到数据后的业务代码
   if (tableData.value.length !== 0) {
-    console.log(tableData.value);
     tableData.value
       .flatMap((innerArray) => innerArray)
       .forEach((element) => {
-        element.Record.forEach((a) => {
-          console.log(dataJson.arrange_id, a.arrange_id);
+        element.Record.forEach((res) => {
           if (
-            dataJson.arrange_id == a.arrange_id &&
-            dataJson.content_id == a.content_id &&
-            dataJson.student_id == a.student_id
+            dataJson.arrange_id == res.arrange_id &&
+            dataJson.content_id == res.content_id &&
+            dataJson.student_id == res.student_id
           ) {
-            a.content = dataJson.content;
+            res.content = dataJson.content;
           }
         });
       });
@@ -177,7 +170,7 @@ const wsMessage = (data) => {
 
 const wsError = () => {
   // 比如取消页面的loading
-  console.log("ws连接错误的回调函数");
+  // console.log("ws连接错误的回调函数");
 };
 
 // 页面销毁时关闭ws。因为有可能ws连接接收数据尚未完成，用户就跳转了页面

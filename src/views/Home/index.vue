@@ -294,6 +294,7 @@ watch(
     border-radius: 15px;
     height: 85.5vh;
     background-color: #fff;
+    // overflow: auto;
     position: relative;
   }
 }

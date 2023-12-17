@@ -33,9 +33,6 @@ export const userLogin = defineStore('user',
                     message: "账号或密码错误！"
                 })
             }
-            console.log("login", res);
-
-
         }
         return {
             userInfo,

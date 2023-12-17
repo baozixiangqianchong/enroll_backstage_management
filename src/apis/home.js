@@ -1,12 +1,5 @@
 import http from "../utils/http";
 
-//获取全部人员信息
-export const getAllSignUpAPI = () => {
-    return http({
-        url: "/march/admin/getAllSignUp",
-        method: "GET",
-    })
-}
 
 //首页筛选（获取展示表格的信息）
 export const BySpeciaIty = () => {
@@ -16,157 +9,14 @@ export const BySpeciaIty = () => {
     })
 }
 
-//获取个人详情信息
-export const getDetailInfo = (id) => {
-    return http({
-        url: "/march/admin/getDetailInfo",
-        method: "GET",
-        params: {
-            id
-        }
-    })
-}
 
-
-//对报名人员筛选
-export const getScreenAPI = (gender, state, name) => {
+//获取七天报名
+export const getSeven = () => {
     return http({
-        url: "/march/admin/screen",
-        method: "GET",
-        params: {
-            gender, state, name
-        }
-    })
-}
-
-//发送信息
-export const SendAPI = (data) => {
-    return http({
-        url: "/march/admin/sendMsg",
-        method: "POST",
-        data
-    })
-}
-
-//获取发送的所有信息
-export const getAllMsg = () => {
-    return http({
-        url: "/march/admin/getAllMsg",
-        method: "GET"
-    })
-}
-
-//通过信息id获取信息详情
-export const getDetailsMsg = (id) => {
-    return http({
-        url: "/march/admin/getDetailsMsg",
-        method: "GET",
-        params: {
-            id
-        }
-    })
-}
-
-//保存到草稿箱
-export const addDraft = (content, title) => {
-    return http({
-        url: "/march/admin/addDraft",
-        method: "POST",
-        data: {
-            title,
-            content
-        }
-    })
-}
-
-//获取草稿箱内的所有信息
-export const getAllDraft = () => {
-    return http({
-        url: "/march/admin/getAllDraft",
-        method: "GET"
-    })
-}
-
-//修改草稿箱内的信息
-export const updateDraft = (id, title, content) => {
-    return http({
-        url: "/march/admin/updateDraft",
-        method: "PUT",
-        data: {
-            id, title, content
-        }
-    })
-}
-
-//删除草稿箱
-export const deleteDraft = (data) => {
-    return http({
-        url: "/march/admin/deleteDraft",
-        method: "DELETE",
-        data
-    })
-}
-
-//自动生成面试表
-export const addArrange = (data) => {
-    return http({
-        url: "/march/admin/arrange/addArrangeGroup",
-        method: "POST",
-        data
-    })
-}
-
-//获取面试安排
-export const getArrange = () => {
-    return http({
-        url: "/march/admin/arrange/getArrangeGroup",
+        url: "/march/admin/getStudentInSeven",
         method: "GET",
     })
 }
-
-//修改个人宣讲时间
-export const VisitTime = (data) => {
-    return http({
-        url: "/march/admin/arrange/updateVisitTime",
-        method: "PUT",
-        data
-    })
-}
-
-//修改个人面试时间
-export const InterviewTime = (data) => {
-    return http({
-        url: "/march/admin/arrange/updateInterviewTime",
-        method: "PUT",
-        data
-    })
-}
-
-//修改学生状态
-export const StatusState = (data) => {
-    return http({
-        url: "/march/admin/updateStatusState",
-        method: "PUT",
-        data
-    })
-}
-
-//同步已参加宣讲的学生状态
-export const VisitState = () => {
-    return http({
-        url: "/march/admin/updateVisitState",
-        method: "PUT"
-    })
-}
-
-//同步已面试的学生状态
-export const InterviewState = () => {
-    return http({
-        url: "/march/admin/updateInterviewState",
-        method: "PUT"
-    })
-}
-
 // 获取面试记录
 export const InterviewRecord = (arrange_id) => {
     return http({
@@ -177,66 +27,12 @@ export const InterviewRecord = (arrange_id) => {
         }
     })
 }
+
 // 获取树状选择
 export const Menus = (type) => {
     return http({
         url: "/march/admin/arrange/menus",
         method: "GET",
         params: { type }
-    })
-}
-
-// 取消学生的安排
-export const cancelTime = (ids, type, arrange_id) => {
-    return http({
-        url: "/march/admin/arrange/cancelTime",
-        method: "DELETE",
-        data: {
-            ids,
-            type,
-            arrange_id
-        }
-    })
-}
-// 取消整场学生的安排
-export const cancelField = (id) => {
-    return http({
-        url: "/march/admin/arrange/delete",
-        method: "DELETE",
-        data: {
-            id
-        }
-    })
-}
-//获取安排组详细信息 
-export const arrangeDetail = (id) => {
-    return http({
-        url: "/march/admin/arrange/detail",
-        method: "GET",
-        params: {
-            id
-        }
-    })
-}
-
-// 新增列
-export const AddedTrain = (id) => {
-    return http({
-        url: "/march/admin/arrange/col",
-        method: "POST",
-        params: {
-            id
-        }
-    })
-}
-// 删除列
-export const DeleteTrain = (arrange_id, content_id) => {
-    return http({
-        url: "/march/admin/arrange/col",
-        method: "DELETE",
-        params: {
-            arrange_id,
-            content_id
-        }
     })
 }

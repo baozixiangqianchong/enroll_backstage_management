@@ -177,7 +177,7 @@
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { setStore } from "@/stores/set.js";
-import { getDetailInfo } from "@/apis/home.js";
+import { getDetailInfo } from "@/apis/apply.js";
 import { Star, StarFilled } from "@element-plus/icons-vue";
 const setinter = setStore();
 const router = useRouter();
@@ -279,7 +279,6 @@ let timerId; // 用于存储定时器标识符
 watch(
   [sex, preach, search],
   debounce(([newSex, newPreach, newSearch]) => {
-    console.log("变化了", [newSex, newPreach, newSearch]);
     // 向接口传递参数，进行搜索
     setinter.getScreen(sex.value, preach.value, search.value);
     // 设置一个定时器，在1秒后再次调用 AllSignUpAPI() 方法
